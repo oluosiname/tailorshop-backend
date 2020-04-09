@@ -10,11 +10,11 @@ module UserCreator
       User.transaction do
         user.save!
         user.create_partner!
-        Response.new(true, [], user, :user)
+        Response::Success.new(user, :user)
       end
 
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed
-      Response.new(false, user.errors.full_messages, user)
+      Response::Failure.new(user.errors.full_messages)
     end
   end
 end
