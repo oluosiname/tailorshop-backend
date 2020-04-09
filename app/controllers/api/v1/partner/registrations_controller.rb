@@ -1,10 +1,12 @@
 class Api::V1::Partner::RegistrationsController < ApplicationController
   def create
     user = User.new(signup_params)
-    if user.save
-      render json: { user_id: user.id }, status: 201
+    result = UserCreator::Partner.call(user)
+
+    if result.success?
+      render json: { user_id: result.user.id }, status: 201
     else
-      render json: { errors: user.errors.full_messages }, status: 422
+      render json: { errors: result.errors }, status: 422
     end
   end
 
