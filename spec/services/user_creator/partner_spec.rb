@@ -4,7 +4,7 @@ RSpec.describe UserCreator::Partner do
     let(:subject) { UserCreator::Partner.call(user) }
 
     it 'returns a response object' do
-      expect(subject).to be_a(Response)
+      expect(subject).to be_a(Response::Base)
     end
 
     context 'successful' do
@@ -23,7 +23,7 @@ RSpec.describe UserCreator::Partner do
         allow(user).to receive(:create_partner!).and_raise(ActiveRecord::RecordInvalid)
       end
 
-      it 'returns failur object' do
+      it 'returns failure object' do
         expect(subject.success?).to be(false)
       end
 
