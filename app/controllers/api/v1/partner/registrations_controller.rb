@@ -9,7 +9,7 @@ class Api::V1::Partner::RegistrationsController < ApplicationController
       token = SigninUser.call(result.user)
       render json: { token: token }, status: 201
     else
-      render json: { errors: result.errors }, status: 422
+      render json: result.errors, status: 422
     end
   end
 
