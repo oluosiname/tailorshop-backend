@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Api::V1::Partner::RegistrationsController < ApplicationController
   def create
-    user = User.new(signup_params)
-    result = UserCreator::Partner.call(user)
+    user = User.new(signup_params.except(:partner))
+    result = UserCreator::Partner.call(user, signup_params[:partner])
 
     if result.success?
       render json: { user_id: result.user.id }, status: 201
@@ -13,6 +15,6 @@ class Api::V1::Partner::RegistrationsController < ApplicationController
   private
 
   def signup_params
-    params.require(:user).permit(:email, :password)
+    params.require(:user).permit(:email, :password, partner: [:name])
   end
 end

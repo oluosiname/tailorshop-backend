@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Api::V1::Partner::RegistrationsController, type: :request do
@@ -8,16 +10,18 @@ RSpec.describe Api::V1::Partner::RegistrationsController, type: :request do
         user: {
           email: Faker::Internet.email,
           password: Faker::Internet.password,
+          partner: {
+            name: Faker::Internet.name
+          }
         }
       }
     end
     let(:subject) { post path, params: params }
 
     context 'valid params' do
-      it 'returns error' do
+      it 'creates a new user' do
         expect { subject }.to change { User.count }.by(1)
         expect(response.status).to eq(201)
-
       end
     end
 
