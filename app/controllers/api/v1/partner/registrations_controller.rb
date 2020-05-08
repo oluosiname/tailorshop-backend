@@ -6,7 +6,8 @@ class Api::V1::Partner::RegistrationsController < ApplicationController
     result = UserCreator::Partner.call(user, signup_params[:partner])
 
     if result.success?
-      render json: { user_id: result.user.id }, status: 201
+      token = SigninUser.call(result.user)
+      render json: { token: token }, status: 201
     else
       render json: { errors: result.errors }, status: 422
     end
