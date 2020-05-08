@@ -1,7 +1,12 @@
-RSpec.describe UserCreator::Partner do
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'UserCreator::Partner' do
   describe '.call' do
     let(:user) { build(:user) }
-    let(:subject) { UserCreator::Partner.call(user) }
+    let(:partner) { { name: 'name' } }
+    let(:subject) { UserCreator::Partner.call(user, partner) }
 
     it 'returns a response object' do
       expect(subject).to be_a(Response::Base)
@@ -10,7 +15,7 @@ RSpec.describe UserCreator::Partner do
     context 'successful' do
       it 'creates a new user and partner' do
         expect { subject }.to change { User.count }.by(1)
-          .and change { Partner.count }.by(1)
+                                                   .and change { Partner.count }.by(1)
       end
 
       it 'returns success object' do
