@@ -20,8 +20,15 @@ RSpec.describe Api::V1::Partner::RegistrationsController, type: :request do
 
     context 'valid params' do
       it 'creates a new user' do
-        expect { subject }.to change { User.count }.by(1)
+        expect { subject }
+          .to change { User.count }.by(1)
+                                   .and change { Partner.count }.by(1)
         expect(response.status).to eq(201)
+      end
+
+      it 'signs in user and returns token' do
+        subject
+        expect(json_body['token']).to_not be_empty
       end
     end
 
