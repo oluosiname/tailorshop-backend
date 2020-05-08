@@ -1,5 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Partner, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    subject { build(:partner) }
+
+    it { is_expected.to validate_uniqueness_of :name }
+    it { is_expected.to validate_presence_of :name }
+  end
 end
