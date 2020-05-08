@@ -2,8 +2,8 @@
 
 class Api::V1::Partner::RegistrationsController < ApplicationController
   def create
-    user = User.new(signup_params.except(:partner))
-    result = UserCreator::Partner.call(user, signup_params[:partner])
+    user = User.new(signup_params.except(:company))
+    result = UserCreator::Partner.call(user, signup_params[:company])
 
     if result.success?
       token = SigninUser.call(result.user)
@@ -16,6 +16,6 @@ class Api::V1::Partner::RegistrationsController < ApplicationController
   private
 
   def signup_params
-    params.require(:user).permit(:email, :password, partner: [:name])
+    params.require(:user).permit(:email, :password, :company)
   end
 end

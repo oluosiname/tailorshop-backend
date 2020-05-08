@@ -2,17 +2,17 @@
 
 module UserCreator
   class Partner < ApplicationService
-    attr_reader :user, :partner
+    attr_reader :user, :company_name
 
-    def initialize(user, partner)
+    def initialize(user, company_name)
       @user = user
-      @partner = partner
+      @company_name = company_name
     end
 
     def call
       User.transaction do
         user.save!
-        user.create_partner!(name: partner[:name])
+        user.create_partner!(name: company_name)
         Response::Success.new(user, :user)
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed

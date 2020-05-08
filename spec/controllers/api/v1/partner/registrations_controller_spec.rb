@@ -10,9 +10,7 @@ RSpec.describe Api::V1::Partner::RegistrationsController, type: :request do
         user: {
           email: Faker::Internet.email,
           password: Faker::Internet.password,
-          partner: {
-            name: Faker::Internet.name
-          }
+          company: Faker::Internet.name
         }
       }
     end
@@ -40,7 +38,7 @@ RSpec.describe Api::V1::Partner::RegistrationsController, type: :request do
 
       it 'returns error' do
         expect(response.status).to eq(422)
-        expect(JSON.parse(response.body)).to eq({ 'errors' => ["Password can't be blank"] })
+        expect(JSON.parse(response.body)).to eq(["Password can't be blank"])
       end
     end
   end
