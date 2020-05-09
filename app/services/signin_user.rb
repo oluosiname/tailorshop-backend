@@ -8,6 +8,8 @@ class SigninUser < ApplicationService
   end
 
   def call
-    AuthToken::Encoder.call({ user_id: user.id })
+    token = AuthToken::Encoder.call({ user_id: user.id })
+    user.update(token: token)
+    token
   end
 end
