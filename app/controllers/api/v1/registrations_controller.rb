@@ -1,9 +1,16 @@
 # frozen_string_literal: true
 
-class Api::V1::Partner::RegistrationsController < ApplicationController
+class Api::V1::RegistrationsController < ApplicationController
+  skip_before_action :authenticate_user, only: :create
+
   def create
     user = User.new(signup_params.except(:company))
-    result = UserCreator::Partner.call(user, signup_params[:company])
+
+    result = if signup_params[:company].present?
+               UserCreator::Partner.call(user, signup_params[:company])
+             else
+               UserCreator::Customer.call(user, signup_params[:company])
+              end
 
     if result.success?
       token = SigninUser.call(result.user)

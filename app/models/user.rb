@@ -6,4 +6,5 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   has_one :partner
+  has_one :customer
 end
