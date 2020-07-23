@@ -72,7 +72,7 @@ jobs:
           command: |
             mkdir /tmp/test-results
             mkdir -p test-results/rspec test-artifacts
-            bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+            bundle exec rspec  --profile 10 --format progress
     
       - store_test_results:
           path: /tmp/test-results
@@ -82,12 +82,10 @@ jobs:
   
 workflows:
   version: 2
-  build_and_test:
+  build:
     jobs:
       - build
-      - test:
-          requires:
-            - build
-      - upload-coverage:
-          requires:
-            - test
+  test:
+    jobs:
+      requires:
+        - build
