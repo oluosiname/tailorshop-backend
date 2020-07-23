@@ -67,7 +67,7 @@ jobs:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
       # Run rspec in parallel
-       - run:
+      - run:
           name: Run tests
           command: |
             mkdir -p test-results/rspec test-artifacts
