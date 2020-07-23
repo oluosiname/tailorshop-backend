@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::SessionsController, type: :request do
   describe 'POST api/v1/login' do
+    before do
+      allow(ENV).to receive(:[]).with('AUTH_TOKEN_SECRET').and_return('xyz')
+    end
+
     let(:user) { create(:user) }
     let(:path) { '/api/v1/login' }
     let(:params) do
