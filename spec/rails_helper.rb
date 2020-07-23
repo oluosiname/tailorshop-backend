@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'simplecov'        # << Require simplecov
+SimpleCov.start 'rails'    # << Start simplecov, using the "Rails" preset.
+
 require 'spec_helper'
 
 ENV['RAILS_ENV'] ||= 'test'

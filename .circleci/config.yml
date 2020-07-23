@@ -1,4 +1,3 @@
-  
 version: 2
 
 references:
@@ -62,24 +61,13 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
-      - run:
-          name: Install Code Climate Test Reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
       # Run rspec in parallel
       - run:
           command: |
-            mkdir /tmp/test-results
-            mkdir -p test-results/rspec test-artifacts
             bundle exec rspec  --profile 10 --format progress
-    
-      - store_test_results:
-          path: /tmp/test-results
       - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
-  
+          path: coverage
+
 workflows:
   version: 2
   build_and_test:
