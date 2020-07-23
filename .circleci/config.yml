@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@0.1.2 
+  ruby: circleci/ruby@2.7.0p0
 
 jobs:
   build:
@@ -9,7 +9,22 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+      - restore_cache:
+          key: v1-dep-{{ .Branch }}-{{ epoch }}
+          paths:
+          # This is a broad list of cache paths to include many possible development environments
+          # You can probably delete some of these entries
+          - vendor/bundle
+      - run: bundle install
+      - run: echo -e "export RAILS_ENV=test\nexport RACK_ENV=test" >> $BASH_ENV
+      - run: 'bundle check --path=vendor/bundle || bundle install --path=vendor/bundle
       - run:
           name: Which bundler?
           command: bundle -v
       - ruby/bundle-install
+      
+      
+      
+      
+      
+    
