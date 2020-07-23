@@ -1,30 +1,117 @@
-version: 2.1
-orbs:
-  ruby: circleci/ruby@2.7.0p0
+  
+version: 2
+
+references:
+  default_docker_ruby_executor: &default_docker_ruby_executor
+    image: circleci/ruby:2.7.0
+    environment:
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+      BUNDLE_PATH: vendor/bundle
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
+  postgres: &postgres
+    image: circleci/postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tailorshop_api_test
+      POSTGRES_PASSWORD: ""
 
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.6.3-stretch-node
-    executor: ruby/default
+      - *default_docker_ruby_executor
     steps:
       - checkout
-      - restore_cache:
-          key: v1-dep-{{ .Branch }}-{{ epoch }}
-          paths:
-          # This is a broad list of cache paths to include many possible development environments
-          # You can probably delete some of these entries
-          - vendor/bundle
-      - run: bundle install
-      - run: echo -e "export RAILS_ENV=test\nexport RACK_ENV=test" >> $BASH_ENV
-      - run: 'bundle check --path=vendor/bundle || bundle install --path=vendor/bundle
+      # Which version of bundler?
       - run:
           name: Which bundler?
           command: bundle -v
-      - ruby/bundle-install
-      
-      
-      
-      
-      
-    
+      # bundle cache
+      - restore_cache:
+          keys:
+            - tailorshop-api-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - tailorshop-api-bundle-v2-
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      # Store bundle cache
+      - save_cache:
+          key: tailorshop-api-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+  test:
+    parallelism: 3
+    docker:
+      - *default_docker_ruby_executor
+      - *postgres
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - tailorshop-api-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - tailorshop-api-bundle-v2-
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bundle exec rails db:schema:load --trace
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      # Run rspec in parallel
+      - run:
+          command: |
+            mkdir /tmp/test-results
+            mkdir -p test-results/rspec test-artifacts
+            ./cc-test-reporter before-build
+            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            bundle exec rspec $TESTFILES --profile 10 --format RspecJunitFormatter --out /tmp/test-results/rspec.xml --format progress
+      - run:
+          name: Code Climate Test Coverage
+          command: |
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.$CIRCLE_NODE_INDEX.json"
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - codeclimate.*.json
+      - store_test_results:
+          path: /tmp/test-results
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results
+  upload-coverage:
+    docker:
+      - image: circleci/ruby:2.7.0
+    working_directory: ~/bikeindex/bike_index
+
+    steps:
+      - attach_workspace:
+          at: ~/bikeindex/bike_index
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          command: |
+            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - upload-coverage:
+          requires:
+            - test
