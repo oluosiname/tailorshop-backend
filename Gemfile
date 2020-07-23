@@ -39,6 +39,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 3.6'
   gem 'shoulda-matchers'
+  gem "rspec_junit_formatter"
 end
 
 group :development do
@@ -47,6 +48,8 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
+
+gem 'simplecov', '~> 0.10', '< 0.18'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

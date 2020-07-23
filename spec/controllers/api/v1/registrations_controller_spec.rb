@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::RegistrationsController, type: :request do
+  before do
+    allow(ENV).to receive(:[]).with('AUTH_TOKEN_SECRET').and_return('xyz')
+  end
+
   describe 'POST api/v1/register' do
     let(:path) { '/api/v1/register' }
 
