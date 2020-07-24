@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_17_154146) do
+ActiveRecord::Schema.define(version: 2020_07_24_080251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "customers", force: :cascade do |t|
-    t.bigint "user_id"
     t.string "first_name"
     t.string "last_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_customers_on_user_id"
+    t.bigint "partner_id"
+    t.index ["partner_id"], name: "index_customers_on_partner_id"
   end
 
   create_table "partners", force: :cascade do |t|
@@ -42,6 +42,6 @@ ActiveRecord::Schema.define(version: 2020_05_17_154146) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "customers", "users"
+  add_foreign_key "customers", "partners"
   add_foreign_key "partners", "users"
 end
