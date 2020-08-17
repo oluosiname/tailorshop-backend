@@ -3,7 +3,7 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'simplecov'        # << Require simplecov
 SimpleCov.start 'rails'    # << Start simplecov, using the "Rails" preset.
-
+SimpleCov.add_filter '/channels/'
 require 'spec_helper'
 
 ENV['RAILS_ENV'] ||= 'test'

@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2020_07_24_083427) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "partner_id"
     t.string "phone_number"
+    t.string "gender"
     t.index ["partner_id"], name: "index_customers_on_partner_id"
   end
 
