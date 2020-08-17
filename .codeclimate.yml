@@ -1,4 +1,4 @@
 exclude_patterns:
-  - "channels
+  - "channels"
   - "spec/"
   - "**/vendor/"
