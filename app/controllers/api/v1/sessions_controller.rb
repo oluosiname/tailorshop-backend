@@ -12,7 +12,7 @@ class Api::V1::SessionsController < ApplicationController
       render json: { token: token, after_login_path: after_login_path(user) },
              status: 200
     else
-      render json: 'Invalid email/password', status: 422
+      render json: { error: 'Invalid email/password' }, status: 422
     end
   end
 

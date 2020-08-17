@@ -9,15 +9,6 @@ class User < ApplicationRecord
   has_one :customer
 
   def after_login_path
-    return '/partner/dashboard' if partner?
-    '/'
-  end
-
-  def customer?
-    customer.present?
-  end
-
-  def partner?
-    partner.present?
+    '/partner/dashboard'
   end
 end

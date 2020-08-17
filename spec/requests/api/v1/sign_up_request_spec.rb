@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::RegistrationsController, type: :request do
+RSpec.describe 'Sign up', type: :request do
   before do
     allow(ENV).to receive(:[]).with('AUTH_TOKEN_SECRET').and_return('xyz')
   end
