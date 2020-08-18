@@ -13,8 +13,12 @@ RSpec.describe 'Sign in', type: :request do
       }
     end
 
-    it 'logs in user' do
+    before do
+      allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('AUTH_TOKEN_SECRET').and_return('xyz')
+    end
+
+    it 'logs in user' do
       post path, params: params
 
       expect(response.status).to eq(200)

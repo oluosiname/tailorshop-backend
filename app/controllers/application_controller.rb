@@ -12,6 +12,8 @@ class ApplicationController < ActionController::API
     end
   end
 
+  private
+
   def decoded_auth_token
     AuthToken::Decoder.call(token)
   end
