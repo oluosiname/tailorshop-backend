@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_17_132551) do
+ActiveRecord::Schema.define(version: 2020_08_19_090510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "add_uuid_to_models", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "addresses", force: :cascade do |t|
+    t.integer "addressable_id"
+    t.string "addressable_type"
+    t.string "address1"
+    t.string "address2"
+    t.string "city"
+    t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
