@@ -7,8 +7,10 @@ module Uuidable
     before_create :set_uuid
   end
 
-  def ufind(uuid)
-    self.class.find_by(uuid: uuid)
+  class_methods do
+    def u_find(uuid)
+      find_by(uuid: uuid)
+    end
   end
 
   private

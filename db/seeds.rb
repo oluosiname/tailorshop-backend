@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+def clean_up
+  Address.destroy_all
+  Customer.destroy_all
+  Partner.destroy_all
+  User.destroy_all
+end
+
 def create_customers
   partner = Partner.first
   50.times do
@@ -9,15 +16,19 @@ def create_customers
                                gender: %w[Male Female].sample,
                                phone_number: Faker::PhoneNumber.phone_number)
 
-    Address.create(address_params(customer))
+    [1, 2, 1, 1, 2, 2, 3, 1, 1].sample.times do
+      Address.create(address_params(customer))
+    end
   end
 end
 
 def address_params(customer)
-  { address1: Faker::Address.street_address,
+  {
+    address1: Faker::Address.street_address,
     address2: Faker::Address.secondary_address,
     city: Faker::Address.city,
     state: Faker::Address.state,
-    addressable: customer }
+    addressable: customer,
+    primary: true
+  }
 end
-create_customers
