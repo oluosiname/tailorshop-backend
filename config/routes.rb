@@ -6,12 +6,13 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/me', to: 'users#show'
-      # namespace :partner do
-
-      # end
       post '/register', to: 'registrations#create'
       post '/login', to: 'sessions#create'
       post '/logout', to: 'sessions#destroy'
+
+      resources :partners, only: :show do
+        resources :customers, only: %i[index], module: :partners
+      end
     end
   end
 end
