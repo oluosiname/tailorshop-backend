@@ -5,6 +5,6 @@ class Api::V1::Partners::BaseController < ApplicationController
   attr_reader :partner
 
   def set_partner
-    @partner = Partner.find_by(uuid: params[:partner_id])
+    @partner = current_user.partner
   end
 end

@@ -10,8 +10,8 @@ Rails.application.routes.draw do
       post '/login', to: 'sessions#create'
       post '/logout', to: 'sessions#destroy'
 
-      resources :partners, only: :show do
-        resources :customers, only: %i[index], module: :partners
+      namespace :partners do
+        resources :customers, only: %i[index]
       end
     end
   end
