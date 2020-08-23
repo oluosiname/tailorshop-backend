@@ -11,10 +11,10 @@ Rails.application.routes.draw do
       post '/logout', to: 'sessions#destroy'
 
       namespace :partners do
-        resources :customers, only: %i[index] do
-          resources :addresses, only: :index
-        end
+        resources :customers, only: %i[index]
       end
+
+      resources :addresses, only: %i[index destroy update]
     end
   end
 end

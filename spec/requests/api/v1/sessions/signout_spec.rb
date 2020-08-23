@@ -9,11 +9,7 @@ RSpec.describe 'Sign out', type: :request do
     let(:token) { user.token }
     let(:subject) { post path, headers: { 'Authorization': "Bearer #{token}" } }
 
-    before do
-      allow(ENV).to receive(:[]).and_call_original
-      allow(ENV).to receive(:[]).with('AUTH_TOKEN_SECRET').and_return('xyz')
-      SigninUser.call(user)
-    end
+    before { sign_in_user(user) }
 
     it 'logs out user' do
       subject

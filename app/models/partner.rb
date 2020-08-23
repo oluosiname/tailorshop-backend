@@ -6,7 +6,7 @@ class Partner < ApplicationRecord
   belongs_to :user
 
   has_many :customers
-  has_one :address, as: :addressible
+  has_many :addresses, as: :addressable
 
   validates :name, presence: true, uniqueness: true
 end

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :partner do
-    name { 'ssss' }
-    user { create(:user) }
+    name { Faker::Company.name }
+    user
   end
 end

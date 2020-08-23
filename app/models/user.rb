@@ -12,4 +12,12 @@ class User < ApplicationRecord
   def after_login_path
     '/partner/dashboard'
   end
+
+  def partner?
+    partner.present?
+  end
+
+  def associated
+    partner
+  end
 end
