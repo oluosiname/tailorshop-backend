@@ -20,6 +20,6 @@ class Customer < ApplicationRecord
   private
 
   def primary_address
-    addresses.where(primary: true).last
+    addresses.select(&:primary).last
   end
 end
