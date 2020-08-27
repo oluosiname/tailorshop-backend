@@ -10,6 +10,8 @@ class Customer < ApplicationRecord
   has_many :addresses, as: :addressable
 
   def address
+    return nil unless addresses.present?
+
     primary_address&.full_address || addresses.last.full_address
   end
 
