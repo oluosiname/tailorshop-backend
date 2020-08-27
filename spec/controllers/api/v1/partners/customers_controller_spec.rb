@@ -31,4 +31,34 @@ RSpec.describe Api::V1::Partners::CustomersController, type: :request do
       end
     end
   end
+
+  describe 'POST api/v1/partner/customers' do
+    let(:path) { '/api/v1/partners/customers' }
+    let(:params) do
+      {
+        customer: {
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name,
+          phone_number: Faker::PhoneNumber.phone_number,
+          gender: %w[Male Female].sample
+        }
+      }
+    end
+
+    let(:subject) { post path, headers: { 'Authorization': "Bearer #{token}" }, params: params }
+
+    it 'creates a new customer for partner' do
+      expect { subject }.to change { partner.customers.count }.by(1)
+      expect(http_status).to eq(201)
+    end
+
+    context 'unauthorized' do
+      let(:token) { 'fake' }
+
+      it 'raises unauthorized' do
+        expect { subject }.to_not(change { partner.customers.count })
+        expect(http_status).to eq(401)
+      end
+    end
+  end
 end

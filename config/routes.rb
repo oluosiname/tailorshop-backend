@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       post '/logout', to: 'sessions#destroy'
 
       namespace :partners do
-        resources :customers, only: %i[index]
+        resources :customers, only: %i[index create]
       end
 
       resources :addresses, only: %i[index destroy update]
