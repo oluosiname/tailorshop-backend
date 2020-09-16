@@ -9,6 +9,9 @@ class Customer < ApplicationRecord
   belongs_to :partner
   has_many :addresses, as: :addressable
 
+  validates :phone_number, presence: true
+  validates :last_name, presence: true
+
   def address
     return nil unless addresses.present?
 
