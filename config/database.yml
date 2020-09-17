@@ -60,6 +60,7 @@ test:
   <<: *default
   database: tailorshop_api_test
 
+
   # As with config/credentials.yml, you never want to store sensitive information,
   # like your database password, in your source code. If your source code is
   # ever seen by anyone, they now have access to your database.
@@ -76,11 +77,5 @@ test:
   #
   # You can use this database configuration with:
   #
-  production:
-    url: <%= ENV['DATABASE_URL'] %>
-
 production:
-  <<: *default
-  database: tailorshop_api_production
-  username: tailorshop_api
-  password: <%= ENV['TAILORSHOP_API_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
