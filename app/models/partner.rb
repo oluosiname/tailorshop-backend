@@ -5,8 +5,8 @@ class Partner < ApplicationRecord
 
   belongs_to :user
 
-  has_many :customers
-  has_many :addresses, as: :addressable
+  has_many :customers, dependent: :destroy
+  has_many :addresses, as: :addressable, dependent: :destroy
 
   validates :name, presence: true, uniqueness: true
 end

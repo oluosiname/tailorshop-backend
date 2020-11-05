@@ -1,14 +1,19 @@
 # frozen_string_literal: true
-
+puts "starting with the thing"
 def clean_up
-  Address.destroy_all
-  Customer.destroy_all
-  Partner.destroy_all
+  puts " called cleanup"
   User.destroy_all
+  Partner.destroy_all
+  Customer.destroy_all
+  Address.destroy_all
 end
 
+clean_up
+create_customers
+
 def create_customers
-  partner = Partner.first
+  user = User.create(email: 'partner@tailorshop.io', password: 'obioma')
+  partner = Partner.create(name: Faker::Company.name, user: user)
   50.times do
     customer = Customer.create(partner_id: partner.id,
                                first_name: Faker::Name.first_name,

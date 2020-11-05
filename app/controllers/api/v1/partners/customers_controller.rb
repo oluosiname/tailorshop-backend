@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class Api::V1::Partners::CustomersController < Api::V1::Partners::BaseController
+  include ApiResponse
+
   def index
     options = {}
-    customers = partner.customers.includes(:addresses).page(params[:page])
+    customers = partner.customers.order(created_at: :desc).includes(:addresses).page(params[:page])
     options[:meta] = { has_next_page: customers.next_page.present? }
     render json: CustomerSerializer.new(customers, options).serializable_hash
   end
@@ -14,7 +16,7 @@ class Api::V1::Partners::CustomersController < Api::V1::Partners::BaseController
       return render json: CustomerSerializer.new(@customer).serialized_json, status: 201
     end
 
-    error!(@customer.errors)
+    error!(@customer.errors.full_messages)
   end
 
   private

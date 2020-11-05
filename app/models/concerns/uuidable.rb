@@ -21,7 +21,7 @@ module Uuidable
 
   def generate_uuid
     loop do
-      random_uuid = SecureRandom.base36(16)
+      random_uuid = SecureRandom.base36(16).upcase
       break random_uuid unless self.class.exists?(uuid: random_uuid)
     end
   end

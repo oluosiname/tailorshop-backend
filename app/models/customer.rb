@@ -7,7 +7,10 @@ class Customer < ApplicationRecord
   max_paginates_per 30
 
   belongs_to :partner
-  has_many :addresses, as: :addressable
+  has_many :addresses, as: :addressable, dependent: :destroy
+
+  validates :phone_number, presence: true
+  validates :last_name, presence: true
 
   def address
     return nil unless addresses.present?

@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
 
-  has_one :partner
+  has_one :partner, dependent: :destroy
   has_one :customer
 
   def after_login_path

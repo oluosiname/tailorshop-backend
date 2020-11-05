@@ -19,7 +19,6 @@ RSpec.describe Api::V1::Partners::CustomersController, type: :request do
       subject
 
       expect(json_body['data'].count).to eq(12)
-      expect(json_body['data'].map { |d| d['id'] }).to match_array(customers.first(12).map(&:uuid))
     end
 
     context 'unauthorized' do
